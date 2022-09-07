@@ -82,6 +82,11 @@
        (stream    (with-recursive-lock-held (*printv-lock*)
                     (mx))))))
 
+#+lispworks
+(let ((*handle-warn-on-redefinition* nil))
+  (setf (macro-function :ppmx) (macro-function 'ppmx)))
+
+#-lispworks
 (setf (macro-function :ppmx) (macro-function 'ppmx))
 
 
@@ -238,8 +243,12 @@
 (defmacro printv (&rest forms)
   (expander forms))
 
-(setf (macro-function :printv) (macro-function 'printv))
+#+lispworks
+(let ((*handle-warn-on-redefinition* nil))
+  (setf (macro-function :printv) (macro-function 'printv)))
 
+#-lispworks
+(setf (macro-function :printv) (macro-function 'printv))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PRINTV/PPMX Readtable Extensions
